@@ -13,19 +13,37 @@ def check_win(board):
         return board[1][1]
     return 0
 
-def start_game():
+def print_board(board):
+    for i in range(3):
+        for j in range(3):
+            if (j != 0):
+                print("|", end='')
+            if (board[i][j] == 1):
+                print("X", end='')
+            elif (board[i][j] == -1):
+                print("O", end='')
+            else:
+                print(" ", end='')
+        if (i != 2):
+            print("\n-----")
+        else:
+            print()
+
+def start_game2players():
     board = np.zeros((3, 3))
     turn = 0
-
     win = 0
+    placed = set()
+
     while (win == 0 and turn < 9):
-        placed = set()
         if (turn % 2 == 0):
             row, column = input("Player 1's turn! Choose row and column to place X in!\n").split()
             row, column = int(row), int(column)
             while ((row, column) in placed or row < 0 or column < 0 or row > 2 or column > 2):
                 row, column = input("Invalid Input! Please enter a valid row and column.\n").split()
+                row, column = int(row), int(column)
             board[row][column] = 1
+            print_board(board)
             placed.add((row, column))
             win = check_win(board)
         elif (turn % 2 == 1):
@@ -33,7 +51,9 @@ def start_game():
             row, column = int(row), int(column)
             while ((row, column) in placed or row < 0 or column < 0 or row > 2 or column > 2):
                 row, column = input("Invalid Input! Please enter a valid row and column.\n").split()
+                row, column = int(row), int(column)
             board[row][column] = -1
+            print_board(board)
             placed.add((row, column))
             win = check_win(board)
         turn += 1
@@ -47,6 +67,6 @@ def start_game():
 if __name__ == "__main__":
     play_flag = input("Would you like to play a game of Tic-Tac-Toe? Enter y for yes and anything else for no.\n")
     while (play_flag == "Y" or play_flag == "y"):
-        start_game()
+        start_game2players()
         play_flag = input("Do you want to play again? Enter y for yes and anything else for no.\n")
     print("Thanks for playing!")
